@@ -1,0 +1,26 @@
+.home-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* 🔒 lock page */
+}
+
+.home-container {
+  flex: 1;
+  display: flex;
+  overflow: hidden; /* 🔒 lock body */
+}
+
+/* Sidebar */
+app-sidebar {
+  width: 250px;
+  height: 100%;
+  flex-shrink: 0;
+}
+
+/* Content */
+.home-content {
+  flex: 1;
+  padding: 20px;
+  overflow: hidden; /* 🔒 no scroll */
+}

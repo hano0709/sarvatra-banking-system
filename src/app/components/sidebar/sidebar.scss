@@ -1,0 +1,31 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+
+  background-color: #f5f5f5;
+  border-right: 1px solid #ddd;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+
+  overflow: hidden;
+}
+
+/* 🔑 CRITICAL FIX */
+.sidebar-top {
+  flex: 1;
+  min-height: 0;   /* 🔥 REQUIRED in flex layouts */
+}
+
+/* Logout pinned and ALWAYS visible */
+.sidebar-bottom {
+  flex-shrink: 0;
+}
+
+.sidebar-bottom h5 {
+  margin: 0;
+  color: #c62828;
+  cursor: pointer;
+}
