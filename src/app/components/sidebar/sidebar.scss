@@ -29,3 +29,12 @@
   color: #c62828;
   cursor: pointer;
 }
+
+.sidebar-top button {
+  border: none;
+  background-color: #f5f5f5;
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  font-size: 20px;
+}

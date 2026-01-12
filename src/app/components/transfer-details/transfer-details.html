@@ -1,52 +1,54 @@
-<form>
-    <div class="transfer-details">
-        <h2>Enter Transfer Details</h2>
+<div class="transfer-details-page">
+    <form>
+        <div class="transfer-details">
+            <h2>Enter Transfer Details</h2>
 
-        <div class="detail-item">
-            <label for="from-account">From Account:</label>
-            <select id="from-account" name="fromAccount" [(ngModel)]="transfer.fromAccount">
-                <option *ngFor="let account of accounts" [value]="account">{{ account }}</option>
-            </select>
-        </div>
+            <div class="detail-item">
+                <label for="from-account">From Account:</label>
+                <select id="from-account" name="fromAccount" [(ngModel)]="transfer.fromAccount">
+                    <option *ngFor="let account of accounts" [value]="account">{{ account }}</option>
+                </select>
+            </div>
 
-        <div class="detail-item">
-            <label for="to-account">To Account:</label>
-            <input
-                type="tel"
-                id="to-account"
-                name="toAccount"
-                inputmode="numeric"
-                pattern="\\d{10}"
-                minlength="10"
-                maxlength="10"
-                [(ngModel)]="transfer.toAccount"
-                (ngModelChange)="onToAccountChange($event)"
-                (keydown)="preventNonDigits($event)"
-                (paste)="handleDataPaste($event)"
-            >
-        </div>
+            <div class="detail-item">
+                <label for="to-account">To Account:</label>
+                <input
+                    type="tel"
+                    id="to-account"
+                    name="toAccount"
+                    inputmode="numeric"
+                    pattern="\\d{10}"
+                    minlength="10"
+                    maxlength="10"
+                    [(ngModel)]="transfer.toAccount"
+                    (ngModelChange)="onToAccountChange($event)"
+                    (keydown)="preventNonDigits($event)"
+                    (paste)="handleDataPaste($event)"
+                >
+            </div>
 
-        <div class="detail-item">
-            <label for="amount">Amount:</label>
-            <input 
-                placeholder="Enter Amount"
-                type="tel" 
-                name="Amount" 
-                id="amount" 
-                [(ngModel)]="transfer.amount" 
-                (ngModelChange)="onAmountChange($event)"
-                (keydown)="preventNonDigits($event)"
-                (paste)="handleDataPaste($event)"
-            >
-        </div>
+            <div class="detail-item">
+                <label for="amount">Amount:</label>
+                <input 
+                    placeholder="Enter Amount"
+                    type="tel" 
+                    name="Amount" 
+                    id="amount" 
+                    [(ngModel)]="transfer.amount" 
+                    (ngModelChange)="onAmountChange($event)"
+                    (keydown)="preventNonDigits($event)"
+                    (paste)="handleDataPaste($event)"
+                >
+            </div>
 
-        <div class="detail-item">
-            <label for="transfer-type">Transfer Type:</label>
-            <span id="transfer-type">{{ TransferType }}</span>
+            <div class="detail-item">
+                <label for="transfer-type">Transfer Type:</label>
+                <span id="transfer-type">{{ TransferType }}</span>
+            </div>
+            
+            <div class="button">
+                <button (click)="submitTransfer()">Submit</button>
+            </div>
         </div>
-        
-        <div class="button">
-            <button (click)="submitTransfer()">Submit</button>
-        </div>
-    </div>
-</form>
+    </form>
+</div>
