@@ -19,8 +19,26 @@ app-sidebar {
 }
 
 /* Content */
-.home-content {
+.home-content-container {
   flex: 1;
   padding: 20px;
   overflow: hidden; /* 🔒 no scroll */
+}
+
+.home-content {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+
+button {
+  padding: 15px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
 }
