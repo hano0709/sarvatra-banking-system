@@ -13,11 +13,14 @@ import { NgIf } from '@angular/common';
 export class Home {
   
   isChildRouteActive = false;
+  showFundTransferDropdown = false;
+  private dropdownHideTimeout?: ReturnType<typeof setTimeout>;
   
   constructor(private router: Router) {}
 
   goToTransfer(transferType: string) {
     this.isChildRouteActive = true;
+    this.showFundTransferDropdown = false;
     this.router.navigate(['/components/transfer-details'], {
       queryParams: { transferType },
     });
@@ -25,5 +28,23 @@ export class Home {
 
   onChildActivate() {
     this.isChildRouteActive = true;
+  }
+
+  onFundTransferHover(isHovered: boolean) {
+    if (isHovered) {
+      if (this.dropdownHideTimeout) {
+        clearTimeout(this.dropdownHideTimeout);
+        this.dropdownHideTimeout = undefined;
+      }
+      this.showFundTransferDropdown = true;
+    } else {
+      this.dropdownHideTimeout = setTimeout(() => {
+        this.showFundTransferDropdown = false;
+      }, 150);
+    }
+  }
+
+  onDropdownHover(isHovered: boolean) {
+    this.onFundTransferHover(isHovered);
   }
 }

@@ -1,15 +1,11 @@
 <div class="sidebar">
   <div class="sidebar-top">
-    <button>
+    <button
+      (mouseenter)="onFundTransferMouseEnter()"
+      (mouseleave)="onFundTransferMouseLeave()"
+    >
       Fund Transfer >
     </button>
-    <div class="dropdwn">
-      <ul>
-        <li>Inter Bank</li>
-        <li>Intra Bank</li>
-        <li>NRI Bank</li>
-      </ul>
-    </div>
   </div>
 
   <div class="sidebar-bottom">
