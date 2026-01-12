@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Login } from '../../login/login';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,5 +9,9 @@ import { Component } from '@angular/core';
   styleUrl: './sidebar.scss',
 })
 export class Sidebar {
+  constructor(private router: Router) {}
 
+  goLogin() {
+    this.router.navigate(['/login']);
+  }
 }
