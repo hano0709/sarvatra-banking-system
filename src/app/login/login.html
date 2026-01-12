@@ -1,1 +1,18 @@
-<p>login works!</p>
+<div class="login-page">
+    <div class="login-box">
+        <h1>Login Page</h1>
+        <form>
+            <div class="username">
+                <label for="username">Username:</label>
+                <input type="text" name="username" id="username" placeholder="Enter your Username">
+            </div>
+            <div class="password">
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" placeholder="Enter your Password">
+            </div>
+        </form>
+        <div class="button">
+            <button (click)="goHome()">Login</button>
+        </div>
+    </div>
+</div>
