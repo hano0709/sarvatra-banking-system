@@ -11,13 +11,16 @@ import { NgIf } from '@angular/common';
   styleUrl: './home.scss',
 })
 export class Home {
+  
   isChildRouteActive = false;
   
   constructor(private router: Router) {}
 
-  goToTransfer() {
+  goToTransfer(transferType: string) {
     this.isChildRouteActive = true;
-    this.router.navigate(['/components/transfer-details']);
+    this.router.navigate(['/components/transfer-details'], {
+      queryParams: { transferType },
+    });
   }
 
   onChildActivate() {
