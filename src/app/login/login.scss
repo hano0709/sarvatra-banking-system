@@ -1,45 +1,14 @@
-.login-page {
-    display: flex;
-    padding-top: 10%;
-    justify-content: center;
-    height: 100vh;
-    overflow: hidden;
+:host {
+  display: block;
 }
 
-.login-box {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
+.login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
 }
 
-h1 {
-    margin-left: 25px;
-    margin-right: 25px;
-    margin-bottom: 70px;
-    display: flex;
-    justify-content: center;
-}
-
-.username {
-    margin-bottom: 25px;
-}
-
-label{
-    margin-right: 20px;
-}
-
-form {
-    margin-bottom: 30px;
-}
-
-.button {
-    display: flex;
-    justify-content: center;
-}
-
-button {
-    width: 60px;
-    height: 30px;
-    font-size: 16px;
-    cursor: pointer;
+.login-card {
+  border: none;
+  border-radius: 0.75rem;
 }

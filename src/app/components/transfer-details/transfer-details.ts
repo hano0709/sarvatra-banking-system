@@ -48,12 +48,39 @@ export class TransferDetails {
   submitTransfer() {
     if (this.isSubmitting) return;
 
+    const amount = Number(this.transfer.amount);
+    const toAccount = this.transfer.toAccount.trim();
+
+    // Basic client-side validation to avoid obvious 400s from the API
+    if (!this.TransferType) {
+      alert('Please select a transfer type.');
+      return;
+    }
+    if (toAccount.length !== 10) {
+      alert('Please enter a valid 10-digit To Account number.');
+      return;
+    }
+    if (!Number.isFinite(amount) || amount <= 0) {
+      alert('Please enter a valid amount greater than zero.');
+      return;
+    }
+
+    // Convert account numbers to numeric values for backend expecting long
+    const fromAccountNumber = Number(this.transfer.fromAccount);
+    const toAccountNumber = Number(toAccount);
+    if (!Number.isFinite(fromAccountNumber) || !Number.isFinite(toAccountNumber)) {
+      alert('Account numbers must be numeric.');
+      return;
+    }
+
     const payload = {
-      fromAccount: this.transfer.fromAccount,
-      toAccount: this.transfer.toAccount,
-      amount: Number(this.transfer.amount),
+      fromAccount: fromAccountNumber,
+      toAccount: toAccountNumber,
+      amount,
       transferType: this.TransferType,
     };
+
+    console.log('Submitting transaction payload:', payload);
 
     this.isSubmitting = true;
     this.http.post('http://localhost:8080/transactions', payload).subscribe({
@@ -64,7 +91,12 @@ export class TransferDetails {
         this.isSubmitting = false;
       },
       error: (err) => {
-        console.error('Failed to create transaction:', err);
+        console.error('Failed to create transaction:', err?.error ?? err);
+        const message =
+          err?.error?.message ??
+          err?.message ??
+          'Transaction failed. Please verify the details and try again.';
+        alert(message);
         this.isSubmitting = false;
       },
     });

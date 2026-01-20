@@ -35,6 +35,11 @@ app-sidebar {
   position: relative;
 }
 
+/* Centered empty-state (overrides the default left alignment) */
+.home-content.centered {
+  justify-content: center;
+}
+
 .fund-transfer-dropdown {
   position: absolute;
   top: 1%;

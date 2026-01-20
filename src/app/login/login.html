@@ -1,33 +1,51 @@
-<div class="login-page">
-    <div class="login-box">
-        <h1>Login Page</h1>
-        <form (ngSubmit)="login()" #loginForm="ngForm">
-            <div class="username">
-                <label for="username">Username:</label>
+<div class="login-wrapper bg-light">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-5">
+        <div class="card shadow-sm login-card">
+          <div class="card-body p-4">
+            <h1 class="h4 text-center mb-4">Login</h1>
+
+            <form (ngSubmit)="login()" #loginForm="ngForm" novalidate>
+              <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
                 <input
-                    type="text"
-                    name="username"
-                    id="username"
-                    placeholder="Enter your Username"
-                    required
-                    [(ngModel)]="username">
-            </div>
-            <div class="password">
-                <label for="password">Password:</label>
+                  type="text"
+                  class="form-control"
+                  name="username"
+                  id="username"
+                  placeholder="Enter your username"
+                  autocomplete="username"
+                  required
+                  [(ngModel)]="username">
+              </div>
+
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
                 <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="Enter your Password"
-                    required
-                    [(ngModel)]="password">
-            </div>
-            <div class="message" *ngIf="message">
+                  type="password"
+                  class="form-control"
+                  name="password"
+                  id="password"
+                  placeholder="Enter your password"
+                  autocomplete="current-password"
+                  required
+                  [(ngModel)]="password">
+              </div>
+
+              <div *ngIf="message" class="alert alert-info py-2" role="alert">
                 {{ message }}
-            </div>
-            <div class="button">
-                <button type="submit" [disabled]="isSubmitting">Login</button>
-            </div>
-        </form>
+              </div>
+
+              <button class="btn btn-primary w-100" type="submit" [disabled]="isSubmitting">
+                <span *ngIf="!isSubmitting">Login</span>
+                <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span *ngIf="isSubmitting" class="ms-2">Signing in...</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

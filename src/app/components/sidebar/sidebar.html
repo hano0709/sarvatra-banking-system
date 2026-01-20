@@ -1,6 +1,7 @@
-<div class="sidebar">
-  <div class="sidebar-top">
+<div class="sidebar d-flex flex-column h-100 p-3 bg-light">
+  <div class="sidebar-top mb-auto">
     <button
+      class="btn btn-primary w-100 mb-3"
       (mouseenter)="onFundTransferMouseEnter()"
       (mouseleave)="onFundTransferMouseLeave()"
     >
@@ -9,6 +10,6 @@
   </div>
 
   <div class="sidebar-bottom">
-    <button (click)="goLogin()">Logout</button>
+    <button class="btn btn-outline-danger w-100" (click)="goLogin()">Logout</button>
   </div>
 </div>
