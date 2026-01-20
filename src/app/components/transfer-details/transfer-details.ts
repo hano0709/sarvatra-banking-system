@@ -1,7 +1,8 @@
-import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 interface Transfer {
   fromAccount: string;
@@ -23,6 +24,7 @@ export class TransferDetails {
 
   accounts: string[] = ['1234567890', '0987654321', '1122334455'];
   TransferType = '';
+  isSubmitting = false;
 
   @Input() transfer: Transfer = {
     fromAccount: '1234567890',
@@ -33,14 +35,39 @@ export class TransferDetails {
     transferType: '',
   };
 
-  constructor(private route: ActivatedRoute) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private http: HttpClient,
+  ) {
     this.route.queryParamMap.subscribe((params) => {
       this.TransferType = params.get('transferType') ?? '';
     });
   }
 
   submitTransfer() {
-    console.log(this.transfer);
+    if (this.isSubmitting) return;
+
+    const payload = {
+      fromAccount: this.transfer.fromAccount,
+      toAccount: this.transfer.toAccount,
+      amount: Number(this.transfer.amount),
+      transferType: this.TransferType,
+    };
+
+    this.isSubmitting = true;
+    this.http.post('http://localhost:8080/transactions', payload).subscribe({
+      next: (res) => {
+        console.log('Transaction created:', res);
+        alert('Transaction successful');
+        this.router.navigate(['/home']);
+        this.isSubmitting = false;
+      },
+      error: (err) => {
+        console.error('Failed to create transaction:', err);
+        this.isSubmitting = false;
+      },
+    });
   }
 
   onToAccountChange(value: string) {

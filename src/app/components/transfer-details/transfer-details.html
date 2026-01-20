@@ -1,5 +1,5 @@
 <div class="transfer-details-page">
-    <form>
+    <form (ngSubmit)="submitTransfer()">
         <div class="transfer-details">
             <h2>Enter Transfer Details</h2>
 
@@ -47,7 +47,7 @@
             </div>
             
             <div class="button">
-                <button (click)="submitTransfer()">Submit</button>
+                <button type="submit">Submit</button>
             </div>
         </div>
     </form>
