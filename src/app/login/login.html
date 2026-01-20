@@ -1,18 +1,33 @@
 <div class="login-page">
     <div class="login-box">
         <h1>Login Page</h1>
-        <form>
+        <form (ngSubmit)="login()" #loginForm="ngForm">
             <div class="username">
                 <label for="username">Username:</label>
-                <input type="text" name="username" id="username" placeholder="Enter your Username">
+                <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    placeholder="Enter your Username"
+                    required
+                    [(ngModel)]="username">
             </div>
             <div class="password">
                 <label for="password">Password:</label>
-                <input type="password" name="password" id="password" placeholder="Enter your Password">
+                <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="Enter your Password"
+                    required
+                    [(ngModel)]="password">
+            </div>
+            <div class="message" *ngIf="message">
+                {{ message }}
+            </div>
+            <div class="button">
+                <button type="submit" [disabled]="isSubmitting">Login</button>
             </div>
         </form>
-        <div class="button">
-            <button (click)="goHome()">Login</button>
-        </div>
     </div>
 </div>
