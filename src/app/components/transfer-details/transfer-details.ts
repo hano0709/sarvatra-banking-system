@@ -83,7 +83,7 @@ export class TransferDetails {
     console.log('Submitting transaction payload:', payload);
 
     this.isSubmitting = true;
-    this.http.post('http://localhost:8080/transactions', payload).subscribe({
+    this.http.post('http://localhost:8080/api/transactions', payload).subscribe({
       next: (res) => {
         console.log('Transaction created:', res);
         alert('Transaction successful');
