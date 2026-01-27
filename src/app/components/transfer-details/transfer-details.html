@@ -9,14 +9,14 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <label class="form-label" for="from-account">From Account</label>
-                        <select
-                            class="form-select"
+                        <input
+                            class="form-control"
+                            type="text"
                             id="from-account"
                             name="fromAccount"
                             [(ngModel)]="transfer.fromAccount"
+                            readonly
                         >
-                            <option *ngFor="let account of accounts" [value]="account">{{ account }}</option>
-                        </select>
                     </div>
 
                     <div class="mb-3">
@@ -36,6 +36,20 @@
                             (paste)="handleDataPaste($event)"
                         >
                         <div class="form-text">Enter a 10-digit account number.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="to-ifsc">To IFSC Code</label>
+                        <input
+                            class="form-control"
+                            type="text"
+                            id="to-ifsc"
+                            name="toIfscCode"
+                            placeholder="Enter IFSC Code"
+                            maxlength="11"
+                            [(ngModel)]="transfer.toIfscCode"
+                        >
+                        <div class="form-text">Example: SBIN0001234</div>
                     </div>
 
                     <div class="mb-3">

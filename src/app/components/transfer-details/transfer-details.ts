@@ -3,10 +3,12 @@ import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { UserService } from '../../services/user.service';
 
 interface Transfer {
   fromAccount: string;
   toAccount: string;
+  toIfscCode: string;  
   amount: number;
   date: Date;
   status: string;
@@ -22,13 +24,13 @@ interface Transfer {
 })
 export class TransferDetails {
 
-  accounts: string[] = ['1234567890', '0987654321', '1122334455'];
   TransferType = '';
   isSubmitting = false;
 
   @Input() transfer: Transfer = {
-    fromAccount: '1234567890',
+    fromAccount: '',
     toAccount: '',
+    toIfscCode: '',  
     amount: 0,
     date: new Date(),
     status: '',
@@ -39,7 +41,14 @@ export class TransferDetails {
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
+    private userService: UserService,
   ) {
+    // Set fromAccount from stored user data
+    const accNo = this.userService.getAccNo();
+    if (accNo) {
+      this.transfer.fromAccount = accNo;
+    }
+
     this.route.queryParamMap.subscribe((params) => {
       this.TransferType = params.get('transferType') ?? '';
     });
@@ -51,7 +60,6 @@ export class TransferDetails {
     const amount = Number(this.transfer.amount);
     const toAccount = this.transfer.toAccount.trim();
 
-    // Basic client-side validation to avoid obvious 400s from the API
     if (!this.TransferType) {
       alert('Please select a transfer type.');
       return;
@@ -73,30 +81,82 @@ export class TransferDetails {
       return;
     }
 
-    const payload = {
-      fromAccount: fromAccountNumber,
-      toAccount: toAccountNumber,
-      amount,
-      transferType: this.TransferType,
+    const payerAcc = this.userService.getAccNo();
+    const payerIfsc = this.userService.getIfscNo();
+
+    if (!payerAcc || !payerIfsc) {
+      alert('User account or IFSC not found. Please login again.');
+      return;
+    }
+
+    const validationPayload = {
+      payer: {
+        acc_no: Number(payerAcc),
+        ifsc_no: payerIfsc,
+      },
+      payee: {
+        acc_no: Number(toAccount),
+        ifsc_no: this.transfer.toIfscCode,
+      },
     };
 
-    console.log('Submitting transaction payload:', payload);
+    console.log('Sending CBS validation payload:', validationPayload);
 
     this.isSubmitting = true;
-    this.http.post('http://localhost:8080/api/transactions', payload).subscribe({
-      next: (res) => {
-        console.log('Transaction created:', res);
-        alert('Transaction successful');
-        this.router.navigate(['/home']);
-        this.isSubmitting = false;
+
+// First: CBS VALIDATION CALL
+    this.http.post<any>('http://localhost:8080/api/cbs/validate', validationPayload).subscribe({
+      next: (validationRes) => {
+        console.log('CBS validation response:', validationRes);
+
+        // Check response
+        if (validationRes?.transaction === 'valid') {
+
+          // Hidden success → only console log
+          console.log('CBS validation passed. Proceeding with transaction...');
+
+          // --------- EXISTING TRANSACTION FLOW (UNCHANGED) ---------
+
+          const payload = {
+            fromAccount: fromAccountNumber,
+            toAccount: toAccountNumber,
+            amount,
+            transferType: this.TransferType,
+          };
+
+          console.log('Submitting transaction payload:', payload);
+
+          this.http.post('http://localhost:8080/api/transactions', payload).subscribe({
+            next: (res) => {
+              console.log('Transaction created:', res);
+              alert('Transaction successful');
+              this.router.navigate(['/home']);
+              this.isSubmitting = false;
+            },
+            error: (err) => {
+              console.error('Failed to create transaction:', err?.error ?? err);
+              const message =
+                err?.error?.message ??
+                err?.message ??
+                'Transaction failed. Please verify the details and try again.';
+              alert(message);
+              this.isSubmitting = false;
+            },
+          });
+
+          // ---------------------------------------------------------
+
+        } else {
+          // Validation failed
+          const reason = validationRes?.reason ?? 'Validation failed by CBS.';
+          alert('Transaction Invalid: ' + reason);
+          this.isSubmitting = false;
+        }
       },
+
       error: (err) => {
-        console.error('Failed to create transaction:', err?.error ?? err);
-        const message =
-          err?.error?.message ??
-          err?.message ??
-          'Transaction failed. Please verify the details and try again.';
-        alert(message);
+        console.error('CBS validation error:', err?.error ?? err);
+        alert('Unable to validate transaction with CBS. Please try again.');
         this.isSubmitting = false;
       },
     });
